@@ -1,11 +1,19 @@
-# Compiled class file
-*.class
+# --- General ---
 
-# Log file
+# Logs
 *.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
 
-# BlueJ files
-*.ctxt
+# OS-generated files
+.DS_Store
+Thumbs.db
+
+# --- Java / Spring Boot ---
+
+# Compiled class files
+*.class
 
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/
@@ -19,5 +27,83 @@
 *.tar.gz
 *.rar
 
-# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
-hs_err_pid*
+# Maven / Gradle directories
+/target/
+/build/
+/.mvn/
+/.gradle/
+
+# IDE-specific files
+.idea/
+*.iml
+*.iws
+.vscode/
+
+# VS Code files
+.vscode/
+
+# NetBeans files
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+
+# Java specific files
+*.class
+*.jar
+*.war
+*.ear
+
+# Lombok generated files
+*.generated.java
+
+# --- Node / Angular ---
+
+# Compiled output
+/dist
+/out-tsc
+/build
+
+# Angular specific folders
+.angular
+
+# Node specific folders
+node_modules/
+
+# NPM package lock file
+package-lock.json
+yarn.lock
+
+# Typescript compiled output
+*.js
+*.js.map
+*.tsbuildinfo
+
+# Miscellaneous
+npm-debug.log
+yarn-error.log
+lerna-debug.log
+report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
+
+# Environment files
+src/environments/*.ts
+
+# Coverage directory used by tools like jest
+coverage/
+
+# --- Others ---
+
+# Temporary files
+/tmp/
+/temp/
+
+# Eclipse files
+.project
+.classpath
+.settings/
+
+# IntelliJ files
+*.idea/
+*.iml
+*.iws
