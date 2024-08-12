@@ -1,6 +1,6 @@
-<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Safari/537.36 Edg/127.0.0.0" version="24.7.6">
+<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Safari/537.36 Edg/127.0.0.0" version="24.7.6" pages="2">
   <diagram name="Página-1" id="bzmOz15OdiIKFPxjTbM2">
-    <mxGraphModel dx="1409" dy="616" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="1643" dy="662" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -58,22 +58,51 @@
             <mxPoint x="530" y="140" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="Hc8orW0EMglDo2kkM_6p-1" value="cameraRequests" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=26;fillColor=none;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+        <mxCell id="Hc8orW0EMglDo2kkM_6p-1" value="cameraRequests" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=26;fillColor=none;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
           <mxGeometry x="730" y="250" width="240" height="110" as="geometry" />
         </mxCell>
-        <mxCell id="Hc8orW0EMglDo2kkM_6p-2" value="+ id_cameraRequest&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&lt;/span&gt;PK&lt;div&gt;+ id_request&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&lt;/span&gt;FK&lt;/div&gt;&lt;div&gt;+ id_camera&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&lt;/span&gt;FK&lt;br&gt;&lt;/div&gt;&lt;div&gt;+ requested &lt;span class=&quot;hljs-type&quot;&gt;BOOLEAN&amp;nbsp;&lt;/span&gt;&lt;span class=&quot;hljs-keyword&quot;&gt;DEFAULT&lt;/span&gt; &lt;span class=&quot;hljs-literal&quot;&gt;FALSE&lt;/span&gt;&lt;br&gt;&lt;/div&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" vertex="1" parent="Hc8orW0EMglDo2kkM_6p-1">
+        <mxCell id="Hc8orW0EMglDo2kkM_6p-2" value="+ id_cameraRequest&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&lt;/span&gt;PK&lt;div&gt;+ id_request&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&lt;/span&gt;FK&lt;/div&gt;&lt;div&gt;+ id_camera&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&lt;/span&gt;FK&lt;br&gt;&lt;/div&gt;&lt;div&gt;+ requested &lt;span class=&quot;hljs-type&quot;&gt;BOOLEAN&amp;nbsp;&lt;/span&gt;&lt;span class=&quot;hljs-keyword&quot;&gt;DEFAULT&lt;/span&gt; &lt;span class=&quot;hljs-literal&quot;&gt;FALSE&lt;/span&gt;&lt;br&gt;&lt;/div&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" parent="Hc8orW0EMglDo2kkM_6p-1" vertex="1">
           <mxGeometry y="26" width="240" height="84" as="geometry" />
         </mxCell>
-        <mxCell id="Hc8orW0EMglDo2kkM_6p-3" value="" style="endArrow=classic;html=1;rounded=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;exitPerimeter=0;" edge="1" parent="1" source="HkIc03lKfePEvZy9-LNn-4" target="Hc8orW0EMglDo2kkM_6p-1">
+        <mxCell id="Hc8orW0EMglDo2kkM_6p-3" value="" style="endArrow=classic;html=1;rounded=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;exitPerimeter=0;" parent="1" source="HkIc03lKfePEvZy9-LNn-4" target="Hc8orW0EMglDo2kkM_6p-1" edge="1">
           <mxGeometry width="50" height="50" relative="1" as="geometry">
             <mxPoint x="850" y="190" as="sourcePoint" />
             <mxPoint x="780" y="148" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="Hc8orW0EMglDo2kkM_6p-4" value="" style="endArrow=classic;html=1;rounded=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;exitX=0;exitY=0.5;exitDx=0;exitDy=0;" edge="1" parent="1" source="Hc8orW0EMglDo2kkM_6p-2" target="CSMJHs-UybCk0gYDNLTq-6">
+        <mxCell id="Hc8orW0EMglDo2kkM_6p-4" value="" style="endArrow=classic;html=1;rounded=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;exitX=0;exitY=0.5;exitDx=0;exitDy=0;" parent="1" source="Hc8orW0EMglDo2kkM_6p-2" target="CSMJHs-UybCk0gYDNLTq-6" edge="1">
           <mxGeometry width="50" height="50" relative="1" as="geometry">
             <mxPoint x="860" y="180" as="sourcePoint" />
             <mxPoint x="860" y="260" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram id="rrvfTIkHF6q_k4EDH2F8" name="Página-2">
+    <mxGraphModel dx="939" dy="378" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="Oew_Sx50z2HTVWBSwtXO-1" value="&lt;font style=&quot;font-size: 14px;&quot;&gt;Se le pide una base de datos para guardar usuarios y sus mascotas&lt;br&gt;personas&lt;br&gt;- cedula, nombre, apellido, edad, ciudad&lt;/font&gt;&lt;div&gt;&lt;font style=&quot;font-size: 14px;&quot;&gt;mascotas&lt;br&gt;&lt;/font&gt;&lt;/div&gt;&lt;div&gt;&lt;font style=&quot;font-size: 14px;&quot;&gt;- nombre, edad, sexo, raza.&lt;/font&gt;&lt;/div&gt;" style="text;html=1;whiteSpace=wrap;overflow=hidden;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="330" y="60" width="630" height="110" as="geometry" />
+        </mxCell>
+        <mxCell id="Px4XPMo7TP8S722l36lc-1" value="PERSONA" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=20;fillColor=none;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="414" y="330" width="140" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="Px4XPMo7TP8S722l36lc-2" value="+ id_persona&lt;div&gt;+ cedula&lt;/div&gt;&lt;div&gt;+ nombre&lt;/div&gt;&lt;div&gt;+ apellido&lt;/div&gt;&lt;div&gt;+ edad&lt;/div&gt;&lt;div&gt;+ciudad&lt;/div&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" vertex="1" parent="Px4XPMo7TP8S722l36lc-1">
+          <mxGeometry y="20" width="140" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="Px4XPMo7TP8S722l36lc-5" value="MASCOTA" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=20;fillColor=none;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="630" y="330" width="140" height="160" as="geometry" />
+        </mxCell>
+        <mxCell id="Px4XPMo7TP8S722l36lc-6" value="+ id_mascota&lt;div&gt;+ id_persona&lt;br&gt;&lt;div&gt;+nombre&lt;/div&gt;&lt;div&gt;+ edad&lt;/div&gt;&lt;div&gt;+ sexo&lt;/div&gt;&lt;div&gt;+ raza&lt;/div&gt;&lt;/div&gt;&lt;div&gt;+ fecha nacimiento&lt;/div&gt;&lt;div&gt;+ esterilizado&lt;/div&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" vertex="1" parent="Px4XPMo7TP8S722l36lc-5">
+          <mxGeometry y="20" width="140" height="140" as="geometry" />
+        </mxCell>
+        <mxCell id="Px4XPMo7TP8S722l36lc-7" value="" style="endArrow=classic;html=1;rounded=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;" edge="1" parent="1" source="Px4XPMo7TP8S722l36lc-2" target="Px4XPMo7TP8S722l36lc-6">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="550" y="200" as="sourcePoint" />
+            <mxPoint x="440" y="210" as="targetPoint" />
           </mxGeometry>
         </mxCell>
       </root>
