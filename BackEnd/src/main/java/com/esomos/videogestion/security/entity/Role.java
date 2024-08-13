@@ -1,4 +1,6 @@
-package com.esomos.videogestion.entity;
+package com.esomos.videogestion.security.entity;
+
+import com.esomos.videogestion.security.enums.RoleName;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -6,8 +8,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.io.Serializable;
-
-import com.esomos.videogestion.emuns.RoleName;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;

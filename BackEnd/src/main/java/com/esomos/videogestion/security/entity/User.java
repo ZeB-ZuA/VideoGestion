@@ -1,4 +1,4 @@
-package com.esomos.videogestion.entity;
+package com.esomos.videogestion.security.entity;
 
 import java.io.Serializable;
 import java.util.HashSet;
@@ -52,7 +52,7 @@ public class User implements Serializable {
     @JoinTable(name = "users_roles", joinColumns = @JoinColumn(name = "id_User"), inverseJoinColumns = @JoinColumn(name = "id_Role"))
     private Set<Role> roles = new HashSet<>();
 
-    private User(@NotNull long cedula, @NotNull String name, @NotNull String area, @NotNull String email,
+    public User(@NotNull long cedula, @NotNull String name, @NotNull String area, @NotNull String email,
             @NotNull String password, @NotNull String headquarter) {
         this.cedula = cedula;
         this.name = name;
