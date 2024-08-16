@@ -6,11 +6,11 @@ import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.BindingResult;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -32,8 +32,6 @@ import lombok.extern.slf4j.Slf4j;
 
 public class AuthController {
 
-    @Autowired
-    PasswordEncoder passwordEncoder;
 
     @Autowired
     AuthenticationManager authenticatorManager;
@@ -46,9 +44,13 @@ public class AuthController {
 
 
     @PostMapping("/signup")
-    public ResponseEntity<Message> registerUser(@Valid SignupRequest signupRequest, BindingResult bindingResult) {
+    public ResponseEntity<Message> registerUser(@Valid @RequestBody SignupRequest signupRequest, BindingResult bindingResult) {
+        System.out.println("SignupRequest: " + signupRequest.toString());
    
         if (bindingResult.hasErrors()) {
+            bindingResult.getAllErrors().forEach(error -> {
+                log.error(error.getDefaultMessage());
+            });
             return new ResponseEntity<>(new Message("Invalid data"), HttpStatus.BAD_REQUEST);
         }
         if (userService.existsByEmail(signupRequest.getEmail())) {
@@ -67,12 +69,12 @@ public class AuthController {
         Set<Role> roles = new HashSet<>();
     
         if (strRoles == null || strRoles.isEmpty()) {
-            // Si no se envían roles, asignar el rol por defecto "USER"
+ 
             Role userRole = roleService.findByRoleName(RoleName.USER)
                     .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
             roles.add(userRole);
         } else {
-            // Si se envían roles, buscar y asignarlos
+   
             strRoles.forEach(role -> {
                 if (role.equalsIgnoreCase("admin")) {
                     Role adminRole = roleService.findByRoleName(RoleName.ADMIN)
@@ -88,10 +90,10 @@ public class AuthController {
             });
         }
     
-        // Asignar los roles al usuario
+    
         user.setRoles(roles);
     
-        // Guardar el usuario en la base de datos
+       
         userService.save(user);
     
         return new ResponseEntity<>(new Message("User registered successfully!"), HttpStatus.CREATED);

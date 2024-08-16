@@ -5,6 +5,7 @@ import java.util.Set;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -12,7 +13,7 @@ import lombok.Setter;
 @Getter
 public class SignupRequest {
 
-    @NotBlank
+    @NotNull
     private long cedula;
 
     @NotBlank
@@ -32,5 +33,16 @@ public class SignupRequest {
     private String headquarter;
 
     private Set<String> roles = new HashSet<>();
+
+    @Override
+    public String toString() {
+        return "SignupRequest{" +
+                "area='" + area + '\'' +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", headquarter='" + headquarter + '\'' +
+                ", roles=" + roles +
+                '}';
+    }
 
 }

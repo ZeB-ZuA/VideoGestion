@@ -13,7 +13,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 
 @Entity
-@Table(name = "role")
+@Table(name = "roles")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -23,13 +23,13 @@ public class Role implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private int id_Role;
     @NotNull
     @Enumerated(EnumType.STRING)
-    private RoleName roleName;
+    private RoleName role;
 
-    public Role(@NotNull RoleName roleName) {
-        this.roleName = roleName;
+    public Role(@NotNull RoleName role) {
+        this.role = role;
     }
 
 }

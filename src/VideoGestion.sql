@@ -6,7 +6,7 @@ USE VideoGestion;
 
 CREATE TABLE users (
     id_User INT,
-    cedula BIGINT,
+    cedula BIGINT NOT NULL,
     name VARCHAR(255),
     area VARCHAR(255),
     email VARCHAR(255),
@@ -115,14 +115,61 @@ CREATE INDEX idx_record ON requests (record);
 
 -- Foreign keys
 
-ALTER TABLE users_roles ADD CONSTRAINT fk_users_roles_users FOREIGN KEY (id_User) REFERENCES users(id_User);
-ALTER TABLE users_roles ADD CONSTRAINT fk_users_roles_roles FOREIGN KEY (id_Role) REFERENCES roles(id_Role);
-ALTER TABLE cameras ADD CONSTRAINT fk_cameras_buses FOREIGN KEY (id_Bus) REFERENCES buses(id_Bus);
-ALTER TABLE requests ADD CONSTRAINT fk_requests_users FOREIGN KEY (id_User) REFERENCES users(id_User);
-ALTER TABLE requests ADD CONSTRAINT fk_requests_buses FOREIGN KEY (id_Bus) REFERENCES buses(id_Bus);
-ALTER TABLE requests ADD CONSTRAINT fk_requests_videos FOREIGN KEY (id_Video) REFERENCES videos(id_Video);
-ALTER TABLE cameraRequests ADD CONSTRAINT fk_cameraRequests_requests FOREIGN KEY (id_Request) REFERENCES requests(id_Request);
-ALTER TABLE cameraRequests ADD CONSTRAINT fk_cameraRequests_cameras FOREIGN KEY (id_Camera) REFERENCES cameras(id_Camera);
+ALTER TABLE users_roles 
+    ADD CONSTRAINT fk_users_roles_users 
+    FOREIGN KEY (id_User) 
+    REFERENCES users(id_User) 
+    ON DELETE CASCADE 
+    ON UPDATE CASCADE;
+
+ALTER TABLE users_roles 
+    ADD CONSTRAINT fk_users_roles_roles 
+    FOREIGN KEY (id_Role) 
+    REFERENCES roles(id_Role) 
+    ON DELETE CASCADE 
+    ON UPDATE CASCADE;
+
+ALTER TABLE cameras 
+    ADD CONSTRAINT fk_cameras_buses 
+    FOREIGN KEY (id_Bus) 
+    REFERENCES buses(id_Bus) 
+    ON DELETE CASCADE 
+    ON UPDATE CASCADE;
+
+ALTER TABLE requests 
+    ADD CONSTRAINT fk_requests_users 
+    FOREIGN KEY (id_User) 
+    REFERENCES users(id_User) 
+    ON DELETE CASCADE 
+    ON UPDATE CASCADE;
+
+ALTER TABLE requests 
+    ADD CONSTRAINT fk_requests_buses 
+    FOREIGN KEY (id_Bus) 
+    REFERENCES buses(id_Bus) 
+    ON DELETE CASCADE 
+    ON UPDATE CASCADE;
+
+ALTER TABLE requests 
+    ADD CONSTRAINT fk_requests_videos 
+    FOREIGN KEY (id_Video) 
+    REFERENCES videos(id_Video) 
+    ON DELETE CASCADE 
+    ON UPDATE CASCADE;
+
+ALTER TABLE cameraRequests 
+    ADD CONSTRAINT fk_cameraRequests_requests 
+    FOREIGN KEY (id_Request) 
+    REFERENCES requests(id_Request) 
+    ON DELETE CASCADE 
+    ON UPDATE CASCADE;
+
+ALTER TABLE cameraRequests 
+    ADD CONSTRAINT fk_cameraRequests_cameras 
+    FOREIGN KEY (id_Camera) 
+    REFERENCES cameras(id_Camera) 
+    ON DELETE CASCADE 
+    ON UPDATE CASCADE;
 
 
 -- Insert data
@@ -345,6 +392,13 @@ LEFT JOIN cameraRequests cr ON r.id_Request = cr.id_Request
 LEFT JOIN cameras c ON cr.id_Camera = c.id_Camera
 LEFT JOIN videos v ON r.id_Video = v.id_Video
 GROUP BY r.record, r.request_Date, u.name, u.email, u.cedula, u.area, u.headquarter, b.bus_Type, b.no_Bus, r.reason_request, r.glpi_Ticket, r.description, v.video_Date, v.start_time, v.end_time, v.delivery_Method, v.size, r.receptor, r.emitter, r.delivery_Status, r.delivery_Date, r.download_Status;
+
+
+SELECT u.id_User AS user_id, u.name AS user_name, u.email AS user_email, r.role AS role_name
+FROM users u
+JOIN users_roles ur ON u.id_User = ur.id_User
+JOIN roles r ON ur.id_Role = r.id_Role
+ORDER BY u.name, r.role;
 
 
 
