@@ -6,7 +6,7 @@ USE VideoGestion;
 
 CREATE TABLE users (
     id_User INT,
-    cedula BIGINT NOT NULL,
+    cedula BIGINT NOT NULL UNIQUE,
     name VARCHAR(255),
     area VARCHAR(255),
     email VARCHAR(255),
@@ -75,9 +75,9 @@ CREATE TABLE requests (
     delivery_Date DATE NULL
 );
 
--- Table cameraRequests
+-- Table camera_Requests
 
-CREATE TABLE cameraRequests (
+CREATE TABLE camera_Requests (
     id_CameraRequest INT,
     id_Request INT,
     id_Camera INT,
@@ -94,7 +94,7 @@ ALTER TABLE videos ADD PRIMARY KEY (id_Video);
 ALTER TABLE buses ADD PRIMARY KEY (id_Bus);
 ALTER TABLE cameras ADD PRIMARY KEY (id_Camera);
 ALTER TABLE requests ADD PRIMARY KEY (id_Request);
-ALTER TABLE cameraRequests ADD PRIMARY KEY (id_CameraRequest);
+ALTER TABLE camera_Requests ADD PRIMARY KEY (id_CameraRequest);
 
 -- autoincrement
 
@@ -104,14 +104,14 @@ ALTER TABLE videos MODIFY id_Video INT AUTO_INCREMENT;
 ALTER TABLE buses MODIFY id_Bus INT AUTO_INCREMENT;
 ALTER TABLE cameras MODIFY id_Camera INT AUTO_INCREMENT;
 ALTER TABLE requests MODIFY id_Request INT AUTO_INCREMENT;
-ALTER TABLE cameraRequests MODIFY id_CameraRequest INT AUTO_INCREMENT;
+ALTER TABLE camera_Requests MODIFY id_CameraRequest INT AUTO_INCREMENT;
 
 -- index
 
-CREATE INDEX idx_cedula ON users (cedula);
-CREATE INDEX idx_email ON users (email);
-CREATE INDEX idx_no_Bus ON buses (no_Bus);
-CREATE INDEX idx_record ON requests (record);
+CREATE UNIQUE INDEX idx_cedula ON users (cedula);
+CREATE UNIQUE INDEX idx_email ON users (email);
+CREATE UNIQUE INDEX idx_no_Bus ON buses (no_Bus);
+CREATE UNIQUE INDEX idx_record ON requests (record);
 
 -- Foreign keys
 
@@ -157,15 +157,15 @@ ALTER TABLE requests
     ON DELETE CASCADE 
     ON UPDATE CASCADE;
 
-ALTER TABLE cameraRequests 
-    ADD CONSTRAINT fk_cameraRequests_requests 
+ALTER TABLE camera_Requests 
+    ADD CONSTRAINT fk_camera_Requests_requests 
     FOREIGN KEY (id_Request) 
     REFERENCES requests(id_Request) 
     ON DELETE CASCADE 
     ON UPDATE CASCADE;
 
-ALTER TABLE cameraRequests 
-    ADD CONSTRAINT fk_cameraRequests_cameras 
+ALTER TABLE camera_Requests 
+    ADD CONSTRAINT fk_camera_Requests_cameras 
     FOREIGN KEY (id_Camera) 
     REFERENCES cameras(id_Camera) 
     ON DELETE CASCADE 
@@ -177,38 +177,35 @@ ALTER TABLE cameraRequests
 INSERT INTO roles (role) VALUES ('ADMIN'),
                               ('USER');
 
-INSERT INTO users (cedula, name, area, email, password, headquarter) VALUES (12345, 'lucy', 'seguridad vial', 'seguridadvial@esomos.com', 'contraseña123', 'USME');
-INSERT INTO users (cedula, name, area, email, password, headquarter) VALUES (12345, 'admin', 'ti its', 'mesati@esomos.com', 'contraseña123', 'USME');
+INSERT INTO users (cedula, name, area, email, password, headquarter) VALUES (12345, 'lucy', 'seguridad vial', 'seguridadvial@esomos.com', 'contraseni123', 'USME');
+INSERT INTO users (cedula, name, area, email, password, headquarter) VALUES (12345, 'admin', 'ti its', 'mesati@esomos.com', 'contrasenia123', 'USME');
 INSERT INTO users_roles (id_User, id_Role) VALUES (1, 2),
                                                  (2, 1);
+
+DELIMITER //
+
+CREATE TRIGGER after_bus_insert
+AFTER INSERT ON buses
+FOR EACH ROW
+BEGIN
+    INSERT INTO cameras (id_Bus, camera_Type) VALUES 
+        (NEW.id_Bus, 'CAMARA FRONTAL'),
+        (NEW.id_Bus, 'CAMARA CONDUCTOR'),
+        (NEW.id_Bus, 'VALIDACION FRONTAL'),
+        (NEW.id_Bus, 'INTERNA 1'),
+        (NEW.id_Bus, 'INTERNA 2'),
+        (NEW.id_Bus, 'INTERNA 3'),
+        (NEW.id_Bus, 'POSTERIOR'),
+        (NEW.id_Bus, 'REVERSA');
+END;
+//
+
+DELIMITER ;
+
 
 INSERT INTO buses (no_Bus, bus_Type) VALUES ('7900', 'PADRON'),
                                             ("7844", "PADRON"),
                                             ("4803", "BUSETON");
-INSERT INTO cameras (id_Bus, camera_Type) VALUES (1, "CAMARA FRONTAL"),
-                                                 (1, "CAMARA CONDUCTOR"),
-                                                 (1, "VALIDACION FRONTAL"),
-                                                 (1, "INTERNA 1"),
-                                                 (1, "INTERNA 2"),
-                                                 (1, "INTERNA 3"),
-                                                 (1, "POSTERIOR"),
-                                                 (1, "REVERSA");
-INSERT INTO cameras (id_Bus, camera_Type) VALUES (2, "CAMARA FRONTAL"),
-                                                 (2, "CAMARA CONDUCTOR"),
-                                                 (2, "VALIDACION FRONTAL"),
-                                                 (2, "INTERNA 1"),
-                                                 (2, "INTERNA 2"),
-                                                 (2, "INTERNA 3"),
-                                                 (2, "POSTERIOR"),
-                                                 (2, "REVERSA");
-INSERT INTO cameras (id_Bus, camera_Type) VALUES (3, "CAMARA FRONTAL"),
-                                                 (3, "CAMARA CONDUCTOR"),
-                                                 (3, "VALIDACION FRONTAL"),
-                                                 (3, "INTERNA 1"),
-                                                 (3, "INTERNA 2"),
-                                                 (3, "INTERNA 3"),
-                                                 (3, "POSTERIOR"),
-                                                 (3, "REVERSA");      
                                                                                           
 INSERT INTO videos (video_Date, start_time, end_time, delivery_Method, size, file_Path) VALUES   ('2021-06-01', '08:00:00', '09:00:00', 'DISCO DURO', 100, 'C:ftp/videos/7861 E-2323'),
                                                                                                  ('2021-06-01', '09:00:00', '10:00:00', 'DISCO DURO', 100, 'C:ftp/videos/7862 E-2323'),
@@ -317,7 +314,7 @@ VALUES (
 SET @requestId3 = LAST_INSERT_ID();
 
 -- Cámaras solicitadas para la Solicitud 1
-INSERT INTO cameraRequests (id_Request, id_Camera, requested) 
+INSERT INTO camera_Requests (id_Request, id_Camera, requested) 
 VALUES 
     (@requestId1, 1, TRUE),  -- CAMARA FRONTAL
     (@requestId1, 2, TRUE),  -- CAMARA CONDUCTOR
@@ -329,7 +326,7 @@ VALUES
     (@requestId1, 8, FALSE); -- REVERSA
 
 -- Cámaras solicitadas para la Solicitud 2
-INSERT INTO cameraRequests (id_Request, id_Camera, requested) 
+INSERT INTO camera_Requests (id_Request, id_Camera, requested) 
 VALUES 
     (@requestId2, 1, TRUE),  -- CAMARA FRONTAL
     (@requestId2, 2, TRUE),  -- CAMARA CONDUCTOR
@@ -341,7 +338,7 @@ VALUES
     (@requestId2, 8, TRUE);  -- REVERSA
 
 -- Cámaras solicitadas para la Solicitud 3
-INSERT INTO cameraRequests (id_Request, id_Camera, requested) 
+INSERT INTO camera_Requests (id_Request, id_Camera, requested) 
 VALUES 
     (@requestId3, 1, FALSE), -- CAMARA FRONTAL
     (@requestId3, 2, TRUE),  -- CAMARA CONDUCTOR
@@ -353,110 +350,10 @@ VALUES
     (@requestId3, 8, FALSE); -- REVERSA
 
 
-/*
-
-SELECT 
-    r.record AS REGISTRO,
-    r.request_Date AS FECHA_SOLICITUD,
-    u.name AS PERSONA_QUIEN_SOLICITA,
-    u.cedula AS CEDULA,
-    u.area AS AREA_SOLICITA,
-    u.headquarter AS SEDE,
-    b.bus_Type AS TIPO_DE_BUS,
-    b.no_Bus AS NO_BUS,
-    r.reason_request AS MOTIVO_SOLICITUD,
-    r.glpi_Ticket AS TICKET_GLPI,
-    COALESCE(MAX(CASE WHEN c.camera_Type = 'CAMARA FRONTAL' AND cr.requested THEN 'SI' ELSE 'No' END), 'No') AS CAMARA_FRONTAL,
-    COALESCE(MAX(CASE WHEN c.camera_Type = 'CAMARA CONDUCTOR' AND cr.requested THEN 'SI' ELSE 'No' END), 'No') AS CAMARA_CONDUCTOR,
-    COALESCE(MAX(CASE WHEN c.camera_Type = 'VALIDACION FRONTAL' AND cr.requested THEN 'SI' ELSE 'No' END), 'No') AS VALIDACION_FRONTAL,
-    COALESCE(MAX(CASE WHEN c.camera_Type = 'INTERNA 1' AND cr.requested THEN 'SI' ELSE 'No' END), 'No') AS INTERNA1,
-    COALESCE(MAX(CASE WHEN c.camera_Type = 'INTERNA 2' AND cr.requested THEN 'SI' ELSE 'No' END), 'No') AS INTERNA_2,
-    COALESCE(MAX(CASE WHEN c.camera_Type = 'INTERNA 3' AND cr.requested THEN 'SI' ELSE 'No' END), 'No') AS INTERNA_3,
-    COALESCE(MAX(CASE WHEN c.camera_Type = 'POSTERIOR' AND cr.requested THEN 'SI' ELSE 'No' END), 'No') AS POSTERIOR,
-    COALESCE(MAX(CASE WHEN c.camera_Type = 'REVERSA' AND cr.requested THEN 'SI' ELSE 'No' END), 'No') AS REVERSA,
-    r.description AS DESCRIPCION,
-    v.video_Date AS FECHA_GRABACION,
-    CONCAT(v.start_time, ' - ', v.end_time) AS FRANJA_HORARIA_SOLICITADA,
-    v.delivery_Method AS MEDIO_MAGNETICO_ENTREGA,
-    v.size AS TAMANO_VIDEO,
-    r.receptor AS PERSONA_QUIEN_RECIBE,
-    r.emitter AS TECNICO_QUE_ENTREGA,
-    r.delivery_Status AS ESTADO_DE_ENTREGA,
-    r.delivery_Date AS FECHA_DE_ENTREGA,
-    r.download_Status AS ESTADO_DESCARGA,
-    DATEDIFF(r.delivery_Date, r.request_Date) AS DIFERENCIA_DIAS_ENTREGA
-FROM requests r
-JOIN users u ON r.id_User = u.id_User
-JOIN buses b ON r.id_Bus = b.id_Bus
-LEFT JOIN cameraRequests cr ON r.id_Request = cr.id_Request
-LEFT JOIN cameras c ON cr.id_Camera = c.id_Camera
-LEFT JOIN videos v ON r.id_Video = v.id_Video
-GROUP BY r.record, r.request_Date, u.name, u.email, u.cedula, u.area, u.headquarter, b.bus_Type, b.no_Bus, r.reason_request, r.glpi_Ticket, r.description, v.video_Date, v.start_time, v.end_time, v.delivery_Method, v.size, r.receptor, r.emitter, r.delivery_Status, r.delivery_Date, r.download_Status;
-
-
-SELECT u.id_User AS user_id, u.name AS user_name, u.email AS user_email, r.role AS role_name
-FROM users u
-JOIN users_roles ur ON u.id_User = ur.id_User
-JOIN roles r ON ur.id_Role = r.id_Role
-ORDER BY u.name, r.role;
-
-
-
-*/
 
 
 
 
 
 
-
-
--- mysql -u root -p < C:\Users\DEVELOP\Desktop\VideoGestion\src\VideoGestion.sql
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+-- mysql -u root -p < C:\Users\User\Desktop\VideoGestion\src\VideoGestion.sql

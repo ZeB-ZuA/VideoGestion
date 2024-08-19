@@ -1,4 +1,4 @@
-package com.esomos.videogestion;
+package com.esomos.videogestion.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

@@ -65,7 +65,7 @@ public class UserService {
 
     @Transactional
     public boolean update(User user) {
-        if (user.getId_User() == 0 || !userRepository.existsById(user.getId_User())) {
+        if (user.getIdUser() == 0 || !userRepository.existsById(user.getIdUser())) {
             return false;
         }
         userRepository.save(user);

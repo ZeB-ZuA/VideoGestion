@@ -26,9 +26,10 @@ public class User implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id_User;
+    private int idUser;
 
     @NotNull
+    @Column(unique = true)
     private long cedula;
 
     @NotNull
