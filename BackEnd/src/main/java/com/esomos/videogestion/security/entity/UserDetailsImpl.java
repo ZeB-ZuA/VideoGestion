@@ -31,8 +31,9 @@ public class UserDetailsImpl implements UserDetails {
 
     @Override
     public String getUsername() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getUsername'");
+       
+        return user.getEmail();
+      
     }
 
     @Override
@@ -52,10 +53,10 @@ public class UserDetailsImpl implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return true; // o un atributo boolean en tu entidad User para controlar esto
+        return true; 
     }
 
-    // Métodos adicionales para obtener información del usuario
+ 
     public User getUser() {
         return user;
     }

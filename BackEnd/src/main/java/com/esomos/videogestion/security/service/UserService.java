@@ -1,16 +1,20 @@
 package com.esomos.videogestion.security.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
 import com.esomos.videogestion.security.entity.User;
+import com.esomos.videogestion.security.entity.UserDetailsImpl;
 import com.esomos.videogestion.security.repository.UserRepository;
 
 @Service
-public class UserService {
+public class UserService implements UserDetailsService {
 
     @Autowired
     private UserRepository userRepository;
@@ -70,5 +74,12 @@ public class UserService {
         }
         userRepository.save(user);
         return true;
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+       User user = userRepository.findByEmail(username)
+                .orElseThrow(() -> new UsernameNotFoundException("User Not Found with email: " + username));
+        return new UserDetailsImpl(user);
     }
 }
