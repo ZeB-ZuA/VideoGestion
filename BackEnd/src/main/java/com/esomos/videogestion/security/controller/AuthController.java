@@ -23,13 +23,14 @@ import com.esomos.videogestion.security.service.UserService;
 import com.esomos.videogestion.security.entity.Role;
 
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @RestController
-@RequestMapping("/auth")
+@RequestMapping("/auth/**")
 @CrossOrigin("*")
-
+@RequiredArgsConstructor
 public class AuthController {
 
 
@@ -59,12 +60,11 @@ public class AuthController {
         if (userService.existsByCedula(signupRequest.getCedula())) {
             return new ResponseEntity<>(new Message("Cedula already in use"), HttpStatus.BAD_REQUEST);
         }
-    
-        // Crear el usuario
+  
         User user = new User(signupRequest.getCedula(), signupRequest.getName(), signupRequest.getArea(),
                 signupRequest.getEmail(), signupRequest.getPassword(), signupRequest.getHeadquarter());
     
-        // Obtener los roles de la solicitud
+
         Set<String> strRoles = signupRequest.getRoles();
         Set<Role> roles = new HashSet<>();
     

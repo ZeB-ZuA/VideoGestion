@@ -1,6 +1,7 @@
 package com.esomos.videogestion.security.repository;
 
 import com.esomos.videogestion.security.entity.User;
+import com.esomos.videogestion.security.enums.RoleName;
 
 import java.util.Optional;
 
@@ -23,6 +24,7 @@ public interface UserRepository extends JpaRepository<User, Integer> {
 
     void deleteByEmail(String email);
 
+    User findUserByRole(RoleName roleName);
 
 
 }
