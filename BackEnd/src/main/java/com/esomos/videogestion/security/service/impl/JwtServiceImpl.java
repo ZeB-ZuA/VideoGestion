@@ -7,13 +7,15 @@ import java.util.function.Function;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
+import com.esomos.videogestion.security.service.JwtService;
+
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 
 @Service
-public class JwtServiceImpl {
+public class JwtServiceImpl implements JwtService {
 
     private static final String SECRET_KEY = "/1m8lXl/Uf72S4vTRivv6P+5FOrpMr9gPQRp4QXEgmA=";
 
@@ -60,5 +62,10 @@ public class JwtServiceImpl {
 
     private boolean isTokenExpired(String token) {
         return extractClaim(token, Claims::getExpiration).before(new Date());
+    }
+
+    @Override
+    public String extractUserName(String token) {
+       return extractClaim(token, Claims::getSubject);
     }
 }

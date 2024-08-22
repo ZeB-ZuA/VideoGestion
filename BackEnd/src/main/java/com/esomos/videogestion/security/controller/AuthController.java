@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.esomos.videogestion.dto.Message;
-import com.esomos.videogestion.security.dto.SignupRequest;
+import com.esomos.videogestion.security.dto.SignUpRequest;
 import com.esomos.videogestion.security.entity.User;
 import com.esomos.videogestion.security.enums.RoleName;
 import com.esomos.videogestion.security.service.RoleService;
@@ -28,7 +28,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @RestController
-@RequestMapping("/auth/**")
+@RequestMapping("/auth")
 @CrossOrigin("*")
 @RequiredArgsConstructor
 public class AuthController {
@@ -45,7 +45,7 @@ public class AuthController {
 
 
     @PostMapping("/signup")
-    public ResponseEntity<Message> registerUser(@Valid @RequestBody SignupRequest signupRequest, BindingResult bindingResult) {
+    public ResponseEntity<Message> registerUser(@Valid @RequestBody SignUpRequest signupRequest, BindingResult bindingResult) {
         System.out.println("SignupRequest: " + signupRequest.toString());
    
         if (bindingResult.hasErrors()) {
@@ -98,6 +98,15 @@ public class AuthController {
     
         return new ResponseEntity<>(new Message("User registered successfully!"), HttpStatus.CREATED);
     }
+
+
+
+@Pos
+
+
+
+
+
     
 
 

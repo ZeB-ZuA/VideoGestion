@@ -1,6 +1,6 @@
 package com.esomos.videogestion.config;
 
-import org.springframework.cglib.proxy.NoOp;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -44,6 +44,7 @@ public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Excepti
         .csrf(AbstractHttpConfigurer::disable)
         .authorizeRequests(requests -> requests
             .requestMatchers("/login").permitAll()
+            .requestMatchers("/auth/signup").permitAll()
             .requestMatchers("/home/ADMIN").hasAnyAuthority(RoleName.ADMIN.name())
             .requestMatchers("/home/USER").hasAnyAuthority(RoleName.USER.name())
             .anyRequest().authenticated()

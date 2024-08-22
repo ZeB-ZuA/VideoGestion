@@ -11,7 +11,7 @@ import lombok.Setter;
 
 @Setter
 @Getter
-public class SignupRequest {
+public class SignUpRequest {
 
     @NotNull
     private long cedula;
