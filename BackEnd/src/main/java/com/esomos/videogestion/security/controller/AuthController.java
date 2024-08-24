@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -18,6 +19,8 @@ import com.esomos.videogestion.dto.Message;
 import com.esomos.videogestion.security.dto.SignUpRequest;
 import com.esomos.videogestion.security.entity.User;
 import com.esomos.videogestion.security.enums.RoleName;
+import com.esomos.videogestion.security.repository.UserRepository;
+import com.esomos.videogestion.security.service.JwtService;
 import com.esomos.videogestion.security.service.RoleService;
 import com.esomos.videogestion.security.service.UserService;
 import com.esomos.videogestion.security.entity.Role;
@@ -42,6 +45,11 @@ public class AuthController {
 
     @Autowired
     RoleService roleService;
+    
+    private final JwtService jwtService;
+
+    @Autowired
+    private UserRepository userRepository;
 
 
     @PostMapping("/signup")
@@ -101,7 +109,23 @@ public class AuthController {
 
 
 
-@Pos
+@PostMapping("/login")
+public ResponseEntity<Message> loginUser(@Valid @RequestBody SignUpRequest signupRequest, BindingResult bindingResult) {
+    System.out.println("SignupRequest: " + signupRequest.toString());
+
+    authenticatorManager.authenticate(new UsernamePasswordAuthenticationToken(signupRequest.getEmail(), signupRequest.getPassword()));
+
+    var user = userRepository.findByEmail(signupRequest.getEmail()).orElseThrow(() -> new IllegalArgumentException("Invalid email or password"));
+    var token = jwtService.generateToken(user);
+
+
+
+
+}
+
+
+
+
 
 
 
