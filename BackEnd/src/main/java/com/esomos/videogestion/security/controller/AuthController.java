@@ -3,23 +3,28 @@ package com.esomos.videogestion.security.controller;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.esomos.videogestion.dto.Message;
+import com.esomos.videogestion.security.dto.JwtAuthResonse;
+import com.esomos.videogestion.security.dto.LogInRequest;
 import com.esomos.videogestion.security.dto.SignUpRequest;
 import com.esomos.videogestion.security.entity.User;
 import com.esomos.videogestion.security.enums.RoleName;
-import com.esomos.videogestion.security.repository.UserRepository;
 import com.esomos.videogestion.security.service.JwtService;
 import com.esomos.videogestion.security.service.RoleService;
 import com.esomos.videogestion.security.service.UserService;
@@ -35,7 +40,7 @@ import lombok.extern.slf4j.Slf4j;
 @CrossOrigin("*")
 @RequiredArgsConstructor
 public class AuthController {
-
+    private static final Logger logger = LoggerFactory.getLogger(AuthController.class);
 
     @Autowired
     AuthenticationManager authenticatorManager;
@@ -45,17 +50,14 @@ public class AuthController {
 
     @Autowired
     RoleService roleService;
-    
+
     private final JwtService jwtService;
 
-    @Autowired
-    private UserRepository userRepository;
-
-
     @PostMapping("/signup")
-    public ResponseEntity<Message> registerUser(@Valid @RequestBody SignUpRequest signupRequest, BindingResult bindingResult) {
+    public ResponseEntity<Message> registerUser(@Valid @RequestBody SignUpRequest signupRequest,
+            BindingResult bindingResult) {
         System.out.println("SignupRequest: " + signupRequest.toString());
-   
+
         if (bindingResult.hasErrors()) {
             bindingResult.getAllErrors().forEach(error -> {
                 log.error(error.getDefaultMessage());
@@ -68,21 +70,20 @@ public class AuthController {
         if (userService.existsByCedula(signupRequest.getCedula())) {
             return new ResponseEntity<>(new Message("Cedula already in use"), HttpStatus.BAD_REQUEST);
         }
-  
+
         User user = new User(signupRequest.getCedula(), signupRequest.getName(), signupRequest.getArea(),
                 signupRequest.getEmail(), signupRequest.getPassword(), signupRequest.getHeadquarter());
-    
 
         Set<String> strRoles = signupRequest.getRoles();
         Set<Role> roles = new HashSet<>();
-    
+
         if (strRoles == null || strRoles.isEmpty()) {
- 
+
             Role userRole = roleService.findByRoleName(RoleName.USER)
                     .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
             roles.add(userRole);
         } else {
-   
+
             strRoles.forEach(role -> {
                 if (role.equalsIgnoreCase("admin")) {
                     Role adminRole = roleService.findByRoleName(RoleName.ADMIN)
@@ -97,42 +98,50 @@ public class AuthController {
                 }
             });
         }
-    
-    
+
         user.setRoles(roles);
-    
-       
+
         userService.save(user);
-    
+
         return new ResponseEntity<>(new Message("User registered successfully!"), HttpStatus.CREATED);
     }
 
+    @PostMapping("/login")
+    public ResponseEntity<?> loginUser(@Valid @RequestBody LogInRequest loginRequest,
+            BindingResult bindingResult) {
+        logger.info("Login attempt with email: {} and password: {}", loginRequest.getEmail(),
+                loginRequest.getPassword());
 
+        if (bindingResult.hasErrors()) {
+            bindingResult.getAllErrors().forEach(error -> log.error(error.getDefaultMessage()));
+            return new ResponseEntity<>(new Message("Invalid data"), HttpStatus.BAD_REQUEST);
+        }
 
-@PostMapping("/login")
-public ResponseEntity<Message> loginUser(@Valid @RequestBody SignUpRequest signupRequest, BindingResult bindingResult) {
-    System.out.println("SignupRequest: " + signupRequest.toString());
+        try {
+            // Proceso de autenticación
+            logger.info("Attempting to authenticate user: {}", loginRequest.getEmail());
+            authenticatorManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword()));
 
-    authenticatorManager.authenticate(new UsernamePasswordAuthenticationToken(signupRequest.getEmail(), signupRequest.getPassword()));
+            UserDetails userDetails = userService.loadUserByUsername(loginRequest.getEmail());
 
-    var user = userRepository.findByEmail(signupRequest.getEmail()).orElseThrow(() -> new IllegalArgumentException("Invalid email or password"));
-    var token = jwtService.generateToken(user);
+            logger.info("User authenticated. Generating token...");
+            String token = jwtService.generateToken(userDetails);
 
+            JwtAuthResonse jwtAuthResonse = new JwtAuthResonse();
+            jwtAuthResonse.setToken(token);
 
+            return new ResponseEntity<>(jwtAuthResonse, HttpStatus.OK);
 
+        } catch (Exception e) {
+            logger.error("Authentication failed for user: {}. Reason: {}", loginRequest.getEmail(), e.getMessage());
+            return new ResponseEntity<>(new Message("Invalid credentials"), HttpStatus.UNAUTHORIZED);
+        }
+    }
 
-}
-
-
-
-
-
-
-
-
-
-    
-
-
+    @GetMapping("/test")
+    public ResponseEntity<String> testEndpoint() {
+        return ResponseEntity.ok("Test endpoint is working");
+    }
 
 }

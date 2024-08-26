@@ -2,6 +2,8 @@ package com.esomos.videogestion.security.config;
 
 import java.io.IOException;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -30,24 +32,37 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final UserService userService;
 
+    private static final Logger logger = LoggerFactory.getLogger(JwtAuthenticationFilter.class);
+
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
         final String authorizationHeader = request.getHeader("Authorization");
         final String jwt;
-        final String UserEmail;
+        final String userEmail;
+        logger.info("Authorization Header: {}" + authorizationHeader);
 
-        if (StringUtils.isEmpty(authorizationHeader)
-                || !org.apache.commons.lang3.StringUtils.startsWith(authorizationHeader, "Bearer ")) {
+        if (StringUtils.isEmpty(authorizationHeader)) {
+            logger.warn("Authorization header is missing");
             filterChain.doFilter(request, response);
             return;
         }
+    
+       
+        if (!authorizationHeader.startsWith("Bearer ")) {
+            logger.warn("Authorization header does not start with 'Bearer '");
+            filterChain.doFilter(request, response);
+            return;
+        }
+    
         jwt = authorizationHeader.substring(7);
-        UserEmail = jwtService.extractUserName(jwt);
+        userEmail = jwtService.extractUserName(jwt);
 
-        if (StringUtils.isNotEmpty(UserEmail) && SecurityContextHolder.getContext().getAuthentication() == null) {
+        logger.info("Extracted user email: {}", userEmail);
 
-            UserDetails userDetails = userService.loadUserByUsername(UserEmail);
+        if (StringUtils.isNotEmpty(userEmail) && SecurityContextHolder.getContext().getAuthentication() == null) {
+
+            UserDetails userDetails = userService.loadUserByUsername(userEmail);
 
             if (jwtService.isTokenValid(jwt, userDetails)) {
                 SecurityContext securityContext = SecurityContextHolder.createEmptyContext();
@@ -58,7 +73,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 securityContext.setAuthentication(token);
 
                 SecurityContextHolder.setContext(securityContext);
-
+                logger.info("User {} authenticated successfully", userEmail);
+            }else{
+                logger.warn("JWT token is invalid for user {}", userEmail);
             }
 
         }

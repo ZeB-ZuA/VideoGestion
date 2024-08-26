@@ -43,10 +43,11 @@ public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Excepti
     http
         .csrf(AbstractHttpConfigurer::disable)
         .authorizeRequests(requests -> requests
-            .requestMatchers("/login").permitAll()
+            .requestMatchers("/auth/login").permitAll()
             .requestMatchers("/auth/signup").permitAll()
             .requestMatchers("/home/ADMIN").hasAnyAuthority(RoleName.ADMIN.name())
             .requestMatchers("/home/USER").hasAnyAuthority(RoleName.USER.name())
+            .requestMatchers("/auth/test").permitAll()
             .anyRequest().authenticated()
         )
         .sessionManagement(manager -> manager
@@ -77,8 +78,5 @@ public AuthenticationProvider authenticationProvider() {
         return new BCryptPasswordEncoder();
     }
 
-    @Bean
-    public WebSecurityCustomizer webSecurityCustomizer() {
-        return (web) -> web.ignoring().requestMatchers("/ignore1", "/ignore2");
-    }
+    
 }
