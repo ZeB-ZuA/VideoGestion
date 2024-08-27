@@ -74,6 +74,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
                 SecurityContextHolder.setContext(securityContext);
                 logger.info("User {} authenticated successfully", userEmail);
+                logger.info("User role: {}", userDetails.getAuthorities());
             }else{
                 logger.warn("JWT token is invalid for user {}", userEmail);
             }

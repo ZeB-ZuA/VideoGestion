@@ -1,5 +1,6 @@
 package com.esomos.videogestion.security.controller;
 
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -23,6 +24,7 @@ import com.esomos.videogestion.dto.Message;
 import com.esomos.videogestion.security.dto.JwtAuthResonse;
 import com.esomos.videogestion.security.dto.LogInRequest;
 import com.esomos.videogestion.security.dto.SignUpRequest;
+import com.esomos.videogestion.security.dto.refreshTokenRequest;
 import com.esomos.videogestion.security.entity.User;
 import com.esomos.videogestion.security.enums.RoleName;
 import com.esomos.videogestion.security.service.JwtService;
@@ -118,7 +120,7 @@ public class AuthController {
         }
 
         try {
-            // Proceso de autenticación
+            
             logger.info("Attempting to authenticate user: {}", loginRequest.getEmail());
             authenticatorManager.authenticate(
                     new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword()));
@@ -127,10 +129,12 @@ public class AuthController {
 
             logger.info("User authenticated. Generating token...");
             String token = jwtService.generateToken(userDetails);
+            String refresToken = jwtService.generateRefreshToken(new HashMap<>(), userDetails);
 
             JwtAuthResonse jwtAuthResonse = new JwtAuthResonse();
             jwtAuthResonse.setToken(token);
-
+            jwtAuthResonse.setRefreshToken(refresToken);
+            
             return new ResponseEntity<>(jwtAuthResonse, HttpStatus.OK);
 
         } catch (Exception e) {
@@ -138,6 +142,34 @@ public class AuthController {
             return new ResponseEntity<>(new Message("Invalid credentials"), HttpStatus.UNAUTHORIZED);
         }
     }
+
+
+    @PostMapping("/refresh")
+    public ResponseEntity<?> refreshToken(BindingResult bindingResult, refreshTokenRequest refreshTokenRequest) {
+        String userEmail = jwtService.extractUserName(refreshTokenRequest.getToken());
+        UserDetails user = userService.loadUserByUsername(userEmail);
+    
+        try {
+            if (jwtService.isTokenValid(refreshTokenRequest.getToken(), user)) {
+                String jwt = jwtService.generateToken(user);
+                JwtAuthResonse jwtAuthResonse = new JwtAuthResonse();
+                jwtAuthResonse.setToken(jwt);
+                jwtAuthResonse.setRefreshToken(refreshTokenRequest.getToken());
+    
+                return ResponseEntity.ok(jwtAuthResonse);
+            } else {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new Message("Invalid credentials"));
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new Message("Error at refreshing token => "+ e.getMessage()));
+        }
+    }
+
+
+
+
+
+    
 
     @GetMapping("/test")
     public ResponseEntity<String> testEndpoint() {

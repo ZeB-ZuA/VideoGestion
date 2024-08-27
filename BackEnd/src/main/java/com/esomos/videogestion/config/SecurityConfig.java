@@ -9,7 +9,6 @@ import org.springframework.security.authentication.dao.DaoAuthenticationProvider
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -43,11 +42,9 @@ public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Excepti
     http
         .csrf(AbstractHttpConfigurer::disable)
         .authorizeRequests(requests -> requests
-            .requestMatchers("/auth/login").permitAll()
-            .requestMatchers("/auth/signup").permitAll()
-            .requestMatchers("/home/ADMIN").hasAnyAuthority(RoleName.ADMIN.name())
-            .requestMatchers("/home/USER").hasAnyAuthority(RoleName.USER.name())
-            .requestMatchers("/auth/test").permitAll()
+            .requestMatchers("/auth/**").permitAll()
+            .requestMatchers("/home/admin/").hasAnyAuthority(RoleName.ADMIN.name())
+            .requestMatchers("/home/user/").hasAnyAuthority(RoleName.USER.name())
             .anyRequest().authenticated()
         )
         .sessionManagement(manager -> manager
@@ -55,7 +52,7 @@ public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Excepti
         )
         .authenticationProvider(authenticationProvider())
         .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
-
+        System.out.println("Security Filter Chain: " + RoleName.ADMIN.name() + " " + RoleName.USER.name());
     return http.build();
 }
 
