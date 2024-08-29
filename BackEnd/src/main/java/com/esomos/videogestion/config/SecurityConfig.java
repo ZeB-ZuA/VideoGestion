@@ -43,8 +43,8 @@ public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Excepti
         .csrf(AbstractHttpConfigurer::disable)
         .authorizeRequests(requests -> requests
             .requestMatchers("/auth/**").permitAll()
-            .requestMatchers("/home/admin/").hasAnyAuthority(RoleName.ADMIN.name())
-            .requestMatchers("/home/user/").hasAnyAuthority(RoleName.USER.name())
+            .requestMatchers("/home/admin/**").hasAnyAuthority(RoleName.ADMIN.name())
+            .requestMatchers("/home/user/**").hasAnyAuthority(RoleName.USER.name())
             .anyRequest().authenticated()
         )
         .sessionManagement(manager -> manager
