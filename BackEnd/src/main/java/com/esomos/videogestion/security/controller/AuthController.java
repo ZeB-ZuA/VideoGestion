@@ -122,6 +122,7 @@ public class AuthController {
         try {
             
             logger.info("Attempting to authenticate user: {}", loginRequest.getEmail());
+            
             authenticatorManager.authenticate(
                     new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword()));
 

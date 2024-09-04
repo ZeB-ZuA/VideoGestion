@@ -177,8 +177,8 @@ ALTER TABLE camera_Requests
 INSERT INTO roles (role) VALUES ('ADMIN'),
                               ('USER');
 
-INSERT INTO users (cedula, name, area, email, password, headquarter) VALUES (12345, 'lucy', 'seguridad vial', 'seguridadvial@esomos.com', 'contraseni123', 'USME');
-INSERT INTO users (cedula, name, area, email, password, headquarter) VALUES (54321, 'admin', 'ti its', 'mesati@esomos.com', 'contrasenia123', 'USME');
+INSERT INTO users (cedula, name, area, email, password, headquarter) VALUES (12345, 'lucy', 'seguridad vial', 'seguridadvial@esomos.com', 'Somosa2024', 'USME');
+INSERT INTO users (cedula, name, area, email, password, headquarter) VALUES (54321, 'admin', 'ti its', 'mesati@esomos.com', 'Colombia2024', 'USME');
 INSERT INTO users_roles (id_User, id_Role) VALUES (1, 2),
                                                  (2, 1);
 
