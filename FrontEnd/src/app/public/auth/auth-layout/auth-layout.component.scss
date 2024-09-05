@@ -1,0 +1,94 @@
+
+/*
+.body{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background:  url('/assets/loginBG.jpg');
+    background-size: cover; 
+}
+
+.auth-background {
+    width: 60%;
+    height: 70vh;
+    background:  url('/assets/loginBG.jpg');
+    background-size: cover; 
+    padding: 30px 40px;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .auth-card {
+    background-color: #ffffff; 
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 400px; 
+    max-width: 90%; 
+  }*/
+  
+
+  .body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .body::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.5)), 
+                  url('/assets/loginBG.jpg') no-repeat center center;
+    background-size: cover;
+    filter: blur(6px); 
+    z-index: -1;
+  }
+  
+  .body > * {
+    position: relative;
+    z-index: 1; 
+  }
+  
+  
+  
+  
+  .auth-background {
+      width: 60%;
+      height: 70vh;
+      background:  url('/assets/loginBG.jpg');
+      background-size: cover; 
+      padding: 30px 40px;
+      border-radius: 10px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    
+    .auth-card {
+      background-color: #ffffff; 
+      padding: 2rem;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      width: 350px; 
+      max-width: 90%; 
+    }
+    
+    .auth-logo {
+      display: block;
+      margin: 0 auto 1.5rem; 
+      max-width: 250px; 
+      height: auto; 
+    }
+    
+  
+  
