@@ -30,7 +30,7 @@ export class LoginComponent {
       this.authService.login(user).subscribe(
         (response) => {
           if(response){
-           console.log('credentials= ', response);
+          console.log( response);
           }
         },
         (error) => {

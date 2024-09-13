@@ -174,7 +174,7 @@ public class AuthController {
 
     @GetMapping("/test")
     public ResponseEntity<String> testEndpoint() {
-        return ResponseEntity.ok("Test endpoint is working");
+        return ResponseEntity.ok("PUERTO 8080");
     }
 
 }
