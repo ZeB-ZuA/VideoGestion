@@ -9,8 +9,7 @@ import { User } from '../models/User';
 
 export class AuthService {
 
-private readonly LOGIN_URL = 'http://localhost:8080/auth/login';
-private readonly SIGNUP_URL = 'http://localhost:8080/auth/signup';
+private readonly API_URL = 'http://localhost:8080';
 
 constructor(private http: HttpClient) { }
 
@@ -19,7 +18,7 @@ login(user: User){
         email: user.email,
         password: user.password
     };
-    return this.http.post(this.LOGIN_URL, loginData);
+    return this.http.post(this.API_URL+"/auth/login", loginData);
 }
 
 signup(user: User){
@@ -31,8 +30,13 @@ signup(user: User){
         area: user.area,
         headquarter: user.headquarter
     };
-    return this.http.post(this.SIGNUP_URL, signupData);
+    return this.http.post(this.API_URL+"/auth/signup", signupData);
 
+}
+
+adminTest() {
+   
+    return this.http.get(this.API_URL + "/home/admin");
 }
 
 

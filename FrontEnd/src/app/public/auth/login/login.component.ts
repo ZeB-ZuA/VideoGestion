@@ -5,6 +5,7 @@ import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } 
 import { AuthService } from '../../../core/services/AuthService';
 import { HttpClientModule } from '@angular/common/http';
 
+
 @Component({
   selector: 'app-login',
   standalone: true,
@@ -30,10 +31,15 @@ export class LoginComponent {
       this.authService.login(user).subscribe(
         (response) => {
           if(response){
-          console.log( response);
+            alert('Login successful');
+          console.log(response);
+          console.log('Navigating to /home/admin');
+          this.router.navigate(['/home/admin']);
+
           }
         },
         (error) => {
+          alert('Login failed'+ error);
           console.error(error);
         }
       );

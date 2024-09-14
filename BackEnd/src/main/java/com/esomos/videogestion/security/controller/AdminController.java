@@ -21,7 +21,7 @@ public class AdminController {
     @GetMapping
     public ResponseEntity<String> getAdmin() {
         try {
-            // Aquí puedes agregar cualquier lógica adicional si es necesario
+            
             return ResponseEntity.ok("HI ADMINISTRADOR DON RUBEN");
         } catch (AccessDeniedException e) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body("You do not have permission to access this resource" + e.getMessage());
