@@ -29,12 +29,13 @@ export class LoginComponent {
     if(this.loginForm.valid){
       const user: User = this.loginForm.value;
       this.authService.login(user).subscribe(
-        (response) => {
+        (response: any) => {
           if(response){
             alert('Login successful');
-          console.log(response);
-          console.log('Navigating to /home/admin');
-          this.router.navigate(['/home/admin']);
+            console.log('Token:', response.token);
+            console.log('Refresh Token:', response.refreshToken);
+            localStorage.setItem('token', response.token);
+            this.router.navigate(['/home/admin']);
 
           }
         },
