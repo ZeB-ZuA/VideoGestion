@@ -25,26 +25,26 @@ export class LoginComponent {
     });
   }
 
-  onSubmit(){
-    if(this.loginForm.valid){
+  onSubmit() {
+    if (this.loginForm.valid) {
       const user: User = this.loginForm.value;
       this.authService.login(user).subscribe(
-        (response: any) => {
-          if(response){
+        (response: { token: string; refreshToken: string }) => {
+          if (response) {
             alert('Login successful');
             console.log('Token:', response.token);
             console.log('Refresh Token:', response.refreshToken);
             localStorage.setItem('token', response.token);
-            this.router.navigate(['/home/admin']);
-
+            console.log('Redirecting to:', this.authService.redirecBasedOnRole());
+            this.router.navigate([this.authService.redirecBasedOnRole()]);
           }
         },
         (error) => {
-          alert('Login failed'+ error);
-          console.error(error);
+          const errorMessage = error.error?.message || 'Unknown error';
+          alert('Login failed: ' + errorMessage);
+          console.error('Error:', errorMessage);
         }
       );
-
     }
   }
 

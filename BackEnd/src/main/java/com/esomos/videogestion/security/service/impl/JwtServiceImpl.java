@@ -22,8 +22,14 @@ public class JwtServiceImpl implements JwtService {
     private static final String SECRET_KEY = "/1m8lXl/Uf72S4vTRivv6P+5FOrpMr9gPQRp4QXEgmA=";
 
     public String generateToken(UserDetails userDetails) {
+        String roles = userDetails.getAuthorities().stream()
+                .map(authority -> authority.getAuthority())
+                .reduce("", (acc, role) -> acc + role + ",");
+
+
         return Jwts.builder()
                 .setSubject(userDetails.getUsername())
+                .claim("roles", roles)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 24)) // 24 horas
                 .signWith(getSigningKey())
