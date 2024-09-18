@@ -4,6 +4,7 @@ import java.security.Key;
 import java.util.Date;
 import java.util.Map;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 
 import org.springframework.security.core.userdetails.UserDetails;
@@ -23,8 +24,8 @@ public class JwtServiceImpl implements JwtService {
 
     public String generateToken(UserDetails userDetails) {
         String roles = userDetails.getAuthorities().stream()
-                .map(authority -> authority.getAuthority())
-                .reduce("", (acc, role) -> acc + role + ",");
+        .map(authority -> authority.getAuthority())
+        .collect(Collectors.joining(","));
 
 
         return Jwts.builder()
@@ -37,11 +38,15 @@ public class JwtServiceImpl implements JwtService {
     }
 
     public String generateRefreshToken(Map<String, Object> extraClaims, UserDetails userDetails) {
-        return Jwts.builder()
-                .setClaims(extraClaims)
+        String roles = userDetails.getAuthorities().stream()
+        .map(authority -> authority.getAuthority())
+        .collect(Collectors.joining(","));
+        
+         return Jwts.builder()
                 .setSubject(userDetails.getUsername())
+                .claim("roles", roles)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 24 * 7)) // 7 dias
+                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 24 * 7)) // 24 horas
                 .signWith(getSigningKey())
                 .compact();
     }

@@ -48,7 +48,6 @@ export class AuthService {
     decodeToken(token: string) {
         try {
             const decoededToken = jwtDecode(token);
-            console.log('Decoded token:', decoededToken);
             return jwtDecode(token);
 
         } catch (e) {
@@ -64,16 +63,13 @@ export class AuthService {
             return 'auth/login';
         }else{
             const decoededToken: any = this.decodeToken(token);
-            if (decoededToken.role === 'ADMIN') {
-                console.log('role (admin if)' + decoededToken.role);
+            if (decoededToken.roles === 'ADMIN') {
                 return 'home/admin';
-            } else if (decoededToken.role === 'USER') {
-                console.log('role(user if): ' + decoededToken.role);
+            } else if (decoededToken.roles === 'USER') {
                 return 'home/user';
 
             }else{
-                console.log("Invalid role: " + decoededToken.role);
-                
+                console.log("Invalid role: " + decoededToken.roles);       
                 return 'auth/login';
             }
         }
