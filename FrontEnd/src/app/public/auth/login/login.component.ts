@@ -31,11 +31,13 @@ export class LoginComponent {
       this.authService.login(user).subscribe(
         (response: { token: string; refreshToken: string }) => {
           if (response) {
+            localStorage.removeItem('token');
+            localStorage.removeItem('refreshToken');
             alert('Login successful');
             console.log('Token:', response.token);
             console.log('Refresh Token:', response.refreshToken);
             localStorage.setItem('token', response.token);
-            console.log('Redirecting to:', this.authService.redirecBasedOnRole());
+            localStorage.setItem('refreshToken', response.refreshToken);
             this.router.navigate([this.authService.redirecBasedOnRole()]);
           }
         },

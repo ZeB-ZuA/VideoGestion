@@ -63,6 +63,7 @@ export class AuthService {
             return 'auth/login';
         }else{
             const decoededToken: any = this.decodeToken(token);
+            console.log('Decoded token:', decoededToken);
             if (decoededToken.roles === 'ADMIN') {
                 return 'home/admin';
             } else if (decoededToken.roles === 'USER') {

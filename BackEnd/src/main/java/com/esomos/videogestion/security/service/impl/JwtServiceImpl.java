@@ -10,6 +10,8 @@ import java.util.stream.Collectors;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
+import com.esomos.videogestion.security.entity.User;
+import com.esomos.videogestion.security.entity.UserDetailsImpl;
 import com.esomos.videogestion.security.service.JwtService;
 
 import io.jsonwebtoken.Claims;
@@ -27,10 +29,18 @@ public class JwtServiceImpl implements JwtService {
         .map(authority -> authority.getAuthority())
         .collect(Collectors.joining(","));
 
+        int idUser = 0;
 
+        if (userDetails instanceof UserDetailsImpl) {
+            idUser = ((UserDetailsImpl) userDetails).getUser().getIdUser();
+            
+        }
+
+        
         return Jwts.builder()
                 .setSubject(userDetails.getUsername())
                 .claim("roles", roles)
+                .claim("idUser", idUser)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 24)) // 24 horas
                 .signWith(getSigningKey())
